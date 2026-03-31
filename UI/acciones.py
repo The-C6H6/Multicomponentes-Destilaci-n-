@@ -5,7 +5,6 @@ from constantes_k import constantes_k
 
 def on_composicion_change(e, indice, estado):
         estado["componentes"][indice]["composicion"] = e.control.value
-
         
 def on_variable_change(e, estado):
         estado["variable"] = e.control.value
@@ -13,14 +12,8 @@ def on_variable_change(e, estado):
 def on_sustancia_change(e, indice, estado):
         estado["componentes"][indice]["sustancia"] = e.control.value
 
-
-
-
-
 def on_num_componentes_change(e, estado, render):
-        valor = e.control.value
-        
-
+        valor = e.control.value        
         if valor:
             estado["n_componentes"] = int(valor)
         else:
@@ -31,7 +24,6 @@ def on_num_componentes_change(e, estado, render):
         estado["resultado_constantes"] = ""
         estado["resultado_ecuacion"] = ""
         estado["resultado_final"] = ""
-
         render()
 
 
@@ -66,6 +58,8 @@ def calcular(e, estado, render):
         texto_constantes = []
 
         for i, comp in enumerate(estado["componentes"], start=1):
+            if not comp["sustancia"] or not comp["composicion"]:
+                return  
             sustancia = comp["sustancia"]
             composicion = comp["composicion"]
 
