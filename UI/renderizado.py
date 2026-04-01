@@ -36,12 +36,12 @@ def render(componentes_UI, estado):
 
         if estado["resultado_ecuacion"]:
             componentes_UI["controles_resultado"].append(
-                crear_card("Ecuación", estado["resultado_ecuacion"])
+                crear_card("Ecuación (McWilliams)", estado["resultado_ecuacion"])
             )
 
         if estado["resultado_final"]:
             componentes_UI["controles_resultado"].append(
-                crear_card("Resultados", estado["resultado_final"])
+                crear_card("Resultados (McWilliams)", estado["resultado_final"])
             )
 
         componentes_UI["page"].add(

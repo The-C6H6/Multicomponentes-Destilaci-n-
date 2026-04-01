@@ -26,6 +26,7 @@ def main(page: ft.Page):
                     },
 
         "n_componentes": 0,
+        "constantes_k":[],
         "variable": None,
         "variables_disponibles": [],
         "componentes": [],

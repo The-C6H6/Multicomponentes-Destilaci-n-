@@ -1,5 +1,5 @@
 from constantes_k import constantes_k
-
+from calculos import calculos_multicomponentes
 
 
 def on_composicion_change(e, indice, estado):
@@ -10,6 +10,7 @@ def on_variable_change(e, estado, render):
     estado["Variables_valores"]["Presión"] = None
     estado["Variables_valores"]["Fracción Vapor"] = None
     estado["variable"] = e.control.value
+    print(f"Variable seleccionada: {estado['variable']}")
     render()
 
 def on_variable_numerica_change(e, var, estado):
@@ -71,11 +72,12 @@ def limpiar(e, estado, render):
 
 
 def calcular(e, estado, render):
+        
         if estado["n_componentes"] == 0 or not estado["variable"]:
             return
         
         texto_constantes = []
-
+        estado["constantes_k"] = []
         for i, comp in enumerate(estado["componentes"], start=1):
             if not comp["sustancia"] or not comp["composicion"]:
                 return  
@@ -83,7 +85,17 @@ def calcular(e, estado, render):
             composicion = comp["composicion"]
 
             datos = constantes_k[sustancia]
-
+            estado["constantes_k"].append({
+                "sustancia": sustancia,
+                "composicion": composicion,
+                "aT1": datos["aT1"],
+                "aT2": datos["aT2"],
+                "aT6": datos["aT6"],
+                "ap1": datos["ap1"],
+                "ap2": datos["ap2"],
+                "ap6": datos["ap6"],
+                "error_medio": datos["error_medio"]
+            })
             bloque = (
                 f"Componente {i}: {sustancia}\n"
                 f"z{i} = {composicion}\n"
@@ -96,18 +108,21 @@ def calcular(e, estado, render):
                 f"error_medio = {datos['error_medio']}"
             )
             texto_constantes.append(bloque)
-
+        
         estado["resultado_constantes"] = "\n\n".join(texto_constantes)
-        estado["resultado_ecuacion"] = "𝛷(fv) = ∑[(zi(ki−1)) / (1 + fv(ki−1))] = 0"
+        cadena_k, cadena_suma, cadena_respuesta= calculos_multicomponentes(
+            t=estado["Variables_valores"]["Temperatura"],
+            Pt=estado["Variables_valores"]["Presión"],
+            zif=[float(comp["composicion"]) for comp in estado["componentes"]],
+            fraccion_vapor=estado["Variables_valores"]["Fracción Vapor"],
+            constantes_k=estado["constantes_k"],
+            variable=estado["variable"]
+        )
+        estado["resultado_ecuacion"] = cadena_k + "\n\n" + cadena_suma
+        estado["resultado_final"] = cadena_respuesta
 
-        mapa_resultado = {
-            "Temperatura": "T",
-            "Presión": "P",
-            "Fracción Vapor": "fv",
-        }
         if not estado["variable"]:
               return
         
-        estado["resultado_final"] = mapa_resultado[estado["variable"]]
 
         render()
