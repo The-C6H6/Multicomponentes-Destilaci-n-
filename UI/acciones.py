@@ -2,12 +2,28 @@ from constantes_k import constantes_k
 
 
 
-
 def on_composicion_change(e, indice, estado):
         estado["componentes"][indice]["composicion"] = e.control.value
         
-def on_variable_change(e, estado):
-        estado["variable"] = e.control.value
+def on_variable_change(e, estado, render):
+    estado["Variables_valores"]["Temperatura"] = None
+    estado["Variables_valores"]["Presión"] = None
+    estado["Variables_valores"]["Fracción Vapor"] = None
+    estado["variable"] = e.control.value
+    render()
+
+def on_variable_numerica_change(e, var, estado):
+        valor = e.control.value
+        if valor:
+            try:
+                estado["Variables_valores"][var] = float(valor)
+            except ValueError:
+                estado["Variables_valores"][var] = None
+        else:
+            estado["Variables_valores"][var] = None
+        
+
+
 
 def on_sustancia_change(e, indice, estado):
         estado["componentes"][indice]["sustancia"] = e.control.value
@@ -55,6 +71,9 @@ def limpiar(e, estado, render):
 
 
 def calcular(e, estado, render):
+        if estado["n_componentes"] == 0 or not estado["variable"]:
+            return
+        
         texto_constantes = []
 
         for i, comp in enumerate(estado["componentes"], start=1):

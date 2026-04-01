@@ -10,6 +10,7 @@ def distribuir_componentes(estado, componentes_UI):
                         wrap=True,
                     ),
                     ft.Divider(),
+                    ft.Column(controls=componentes_UI["textfields_variables_disponibles"], spacing=12),
                     ft.Column(controls=componentes_UI["filas_componentes"], spacing=12),
                     ft.Row(
                         controls=[

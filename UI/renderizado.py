@@ -1,4 +1,4 @@
-from UI import dd_num_componentes, dd_sustancia, dd_variable, crear_card, distribuir_componentes, limpiar, calcular, on_variable_change, on_sustancia_change, on_composicion_change, ajustar_lista_componentes, on_num_componentes_change, tf_composicion 
+from UI import dd_sustancia, crear_card, distribuir_componentes, tf_composicion, tf_variables_disponibles
 import flet as ft
 
 def render(componentes_UI, estado):
@@ -16,8 +16,18 @@ def render(componentes_UI, estado):
                     wrap=True,
                 )
             )
-
-        
+        estado["variables_disponibles"] = []
+        if estado["variable"]:
+             componentes_UI["textfields_variables_disponibles"] = []
+             variables_posibles = ["Temperatura", "Presión", "Fracción Vapor"]
+             variables_posibles.remove(estado["variable"])
+             estado["variables_disponibles"] = variables_posibles
+        for var in estado["variables_disponibles"]:
+            componentes_UI["textfields_variables_disponibles"].append(
+                tf_variables_disponibles(var, estado)
+            )
+            
+             
 
         if estado["resultado_constantes"]:
             componentes_UI["controles_resultado"].append(

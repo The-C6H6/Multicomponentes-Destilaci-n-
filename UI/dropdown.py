@@ -26,7 +26,7 @@ def dd_sustancia(i: int, comp, estado) -> ft.Dropdown:
                 on_select=lambda e, idx=i - 1: on_sustancia_change(e, idx, estado),
             )
 
-def dd_variable(estado: dict) -> ft.Dropdown:   
+def dd_variable(estado: dict, render: callable) -> ft.Dropdown:   
     return ft.Dropdown(
             label="Selecciona la variable",
             width=500,
@@ -36,7 +36,7 @@ def dd_variable(estado: dict) -> ft.Dropdown:
                 ft.dropdown.Option("Presión"),
                 ft.dropdown.Option("Fracción Vapor"),
             ],
-            on_select=lambda e: on_variable_change(e, estado),
+            on_select=lambda e: on_variable_change(e, estado, render),
         )
 
 

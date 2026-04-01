@@ -1,5 +1,5 @@
 import flet as ft   
-from UI import on_composicion_change
+from UI import on_composicion_change, on_variable_numerica_change
 
 
 
@@ -13,4 +13,11 @@ def tf_composicion(estado, indice):
     )
 
 
-
+def tf_variables_disponibles(var, estado):
+    return ft.TextField(
+        label=f"{var}",
+        value=estado["Variables_valores"][var] if estado["Variables_valores"][var] is not None else "",
+        width=200,
+        hint_text="[Psi] o [Rankie]",
+        on_change=lambda e :on_variable_numerica_change(e, var, estado)
+    )
