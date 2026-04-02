@@ -67,7 +67,6 @@ def ecuacion_McWilliams(T, P, zif, fraccion_vapor, constantes_k):
 
 
 def resolver_ecuacion(ecuacion, variable, tipo_variable):
-    print(ecuacion)
     if tipo_variable == "Temperatura":
         semillas = [0, 200, 300, 500, 700, 1000, 1500]
         condicion = lambda s: s > 0

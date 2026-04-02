@@ -10,7 +10,6 @@ def on_variable_change(e, estado, render):
     estado["Variables_valores"]["Presión"] = None
     estado["Variables_valores"]["Fracción Vapor"] = None
     estado["variable"] = e.control.value
-    print(f"Variable seleccionada: {estado['variable']}")
     render()
 
 def on_variable_numerica_change(e, var, estado):
